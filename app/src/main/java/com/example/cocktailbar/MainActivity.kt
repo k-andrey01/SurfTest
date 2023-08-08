@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -152,15 +153,16 @@ fun nonEmptyScreen(cocktails: List<CocktailEntity>) {
 
 @Composable
 fun CocktailItem(cocktail: CocktailEntity) {
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(16.dp),
+        color = Color.LightGray
     ) {
         Column(
             modifier = Modifier
-                .padding(16.dp)
                 .fillMaxWidth()
+                .padding(16.dp)
         ) {
             Row {
                 Image(
@@ -170,10 +172,22 @@ fun CocktailItem(cocktail: CocktailEntity) {
                 )
 
                 Column {
-                    Text(text = "Name: ${cocktail.name}")
-                    Text(text = "Description: ${cocktail.description}")
-                    Text(text = "Recipe: ${cocktail.recipe}")
-                    Text(text = "Ingredients: ${cocktail.ingredients.joinToString()}")
+                    Text(
+                        text = "Name: ${cocktail.name}",
+                        style = TextStyle(color = Color.Black)
+                    )
+                    Text(
+                        text = "Description: ${cocktail.description}",
+                        style = TextStyle(color = Color.Black)
+                    )
+                    Text(
+                        text = "Recipe: ${cocktail.recipe}",
+                        style = TextStyle(color = Color.Black)
+                    )
+                    Text(
+                        text = "Ingredients: ${cocktail.ingredients.joinToString()}",
+                        style = TextStyle(color = Color.Black) 
+                    )
                 }
             }
         }
