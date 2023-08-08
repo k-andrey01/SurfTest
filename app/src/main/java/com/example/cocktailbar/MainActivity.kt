@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material3.Card
@@ -38,13 +40,21 @@ import com.example.cocktailbar.ui.theme.CocktailBarTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
+            val context = LocalContext.current
+            val databaseHelper = DatabaseHelper(context)
+            val cocktails = databaseHelper.getAllCocktails()
             CocktailBarTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = Color.White
                 ) {
-                    nonEmptyScreen()
+                    if (cocktails.isNotEmpty()) {
+                        nonEmptyScreen(cocktails)
+                    } else {
+                        mainScreenEmpty()
+                    }
                 }
             }
         }
@@ -101,14 +111,40 @@ fun mainScreenEmpty() {
 }
 
 @Composable
-fun nonEmptyScreen() {
+fun nonEmptyScreen(cocktails: List<CocktailEntity>) {
     val context = LocalContext.current
-    val databaseHelper = DatabaseHelper(context)
-    val cocktails = databaseHelper.getAllCocktails()
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        LazyColumn(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            items(cocktails) { cocktail ->
+                CocktailItem(cocktail)
+            }
+        }
 
-    LazyColumn {
-        items(cocktails) { cocktail ->
-            CocktailItem(cocktail)
+        IconButton(
+            onClick = {
+                val intent = Intent(context, AddingCocktailActivity::class.java)
+                context.startActivity(intent)
+            },
+            modifier = Modifier.size(100.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.AddCircle,
+                contentDescription = "AddCocktail",
+                tint = Color.Blue,
+                modifier = Modifier.size(100.dp)
+            )
         }
     }
 }
