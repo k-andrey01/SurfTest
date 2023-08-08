@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -161,10 +162,20 @@ fun CocktailItem(cocktail: CocktailEntity) {
                 .padding(16.dp)
                 .fillMaxWidth()
         ) {
-            Text(text = "Name: ${cocktail.name}")
-            Text(text = "Description: ${cocktail.description}")
-            Text(text = "Recipe: ${cocktail.recipe}")
-            Text(text = "Ingredients: ${cocktail.ingredients.joinToString()}")
+            Row {
+                Image(
+                    painter = painterResource(R.drawable.placeholder),
+                    contentDescription = "arrowDown",
+                    modifier = Modifier.height(75.dp)
+                )
+
+                Column {
+                    Text(text = "Name: ${cocktail.name}")
+                    Text(text = "Description: ${cocktail.description}")
+                    Text(text = "Recipe: ${cocktail.recipe}")
+                    Text(text = "Ingredients: ${cocktail.ingredients.joinToString()}")
+                }
+            }
         }
     }
 }
